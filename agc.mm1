@@ -43,17 +43,17 @@ prefix imp : $->$ prec max;
 
 -- Derived induction rules.
 --| Nicod ponens with and.
-pub theorem pn_a (a b c : wff) (h1 : $D a /\ b c$) (h2 : $a$) : $D b c$
+theorem pn_a (a b c : wff) (h1 : $D a /\ b c$) (h2 : $a$) : $D b c$
     = '(pnl h1 h2);
 --| Modus ponens.
-pub theorem mp(a b : wff) (h1 : $-> a b$) (h2 : $a$)  : $b$
+theorem mp(a b : wff) (h1 : $-> a b$) (h2 : $a$)  : $b$
     = '(pnl h1 h2);
 
---| $th 1$ 
+--| th 1
 --| Short: D D a D b c D D a D b c -> D d c D a d
 --| Hypothesis: D a D b c
 --| Conclusion: D D d c D D a d D a d
-pub theorem th_p00 (a b c d : wff) : $D D a D b c D D a D b c D D d c D D a d D a d$
+theorem th_p00 (a b c d : wff) : $D D a D b c D D a D b c D D d c D D a d D a d$
     = '(pnl
         (! axl $D a D b c$  $D D d c D D a d D a d$  $D a D a b$  a)
         (! axl a b c d));
@@ -62,7 +62,7 @@ pub theorem th_p00 (a b c d : wff) : $D D a D b c D D a D b c D D d c D D a d D 
 --| Hypothesis: D a D b c
 --| Conclusion: D a D b c
 --| No new theorems can be derived from this in the first position of pnl
-pub theorem th_p0p00 (a b c : wff) : $D D a D b c D D a D b c D a D b c$
+theorem th_p0p00 (a b c : wff) : $D D a D b c D D a D b c D a D b c$
     = '(pnl
         (! axl $D a D b c$  $D a D b c$  $D D a c D D a a D a a$  a)
         (! th_p00 a b c a));
@@ -70,33 +70,42 @@ pub theorem th_p0p00 (a b c : wff) : $D D a D b c D D a D b c D a D b c$
 --| Short: -> D a D b D b c D D b D c d a
 --| Hypothesis: D a D b D b c
 --| Conclusion: D D b D c d a
-pub theorem th_pp000(a b c d : wff) : $D D a D b D b c D D D b D c d a D D b D c d a$
+theorem th_pp000(a b c d : wff) : $D D a D b D b c D D D b D c d a D D b D c d a$
     = '(pnl
-        (! th_p00 $D b D c d$  $D D a d /\ b a$  $D b D b c$  a)
+        (! th_p00 $D b D c d$  $D D a d D D b a D b a$  $D b D b c$  a)
         (! axl b c d a));
--- TODO: Add short, hypothesis, conclusion to everything below
-pub theorem th_2_3 (a b c d e : wff) : $-> D a -> D b c D d b D D d D e c a$
+--| th 2.3
+--| Short: -> D a -> D b c D d b D D d D e c a
+--| Hypothesis: D a D D b c D D d b D d b
+--| Conclusion: D D d D e c a
+theorem th_pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D D d D e c a D D d D e c a$
     = '(pnl
-        (! th_p00 $D d D e c$  $D d D e c$  $-> D b c D d b$  a)
+        (! th_p00 $D d D e c$  $D d D e c$  $D D b c D D d b D d b$  a)
         (! th_p00 d e c b));
-pub theorem th_3_1 (a b c d : wff) : $D D a D b D b c D D a D b D b c D D b D c d a$
+-- th_p00p0p00 gives the same result as thp0p00
+--| th 3.1
+--| Hypothesis: D a D b D b c
+--| Conclusion: D D b D c d a
+--| Using this in first position of pnl is equivalent to usign th_pp000
+theorem th_p0pp000 (a b c d : wff) : $D D a D b D b c D D a D b D b c D D b D c d a$
     = '(pnl
         (! axl $D a D b D b c$  $D D b D c d a$  $D D b D c d a$  a)
         (! th_pp000 a b c d));
-pub theorem th_3_2 (a b c d e : wff) : $D D a -> D b c D d b D D a -> D b c D d b D D d D e c a$
+-- TODO: Add short, hypothesis, conclusion to everything below
+theorem th_3_2 (a b c d e : wff) : $D D a -> D b c D d b D D a -> D b c D d b D D d D e c a$
     = '(pnl
         (! axl $D a -> D b c D d b$  $D D d D e c a$  $D D d D e c a$  a)
-        (! th_2_3 a b c d e));
-pub theorem th_3_3 (a b c d : wff) : $-> D a D b D c d D D b D c d a$
+        (! th_pp00p00 a b c d e));
+theorem th_3_3 (a b c d : wff) : $-> D a D b D c d D D b D c d a$
     = '(pnl
         (! th_p00 $D b D c d$  $D b D c d$  $D b D c d$  a)
         (! th_p0p00 b c d));
-pub theorem th_3_4 (a b c d e : wff) : $-> D a D D b D c d e D D e D b D b c a$
+theorem th_3_4 (a b c d e : wff) : $-> D a D D b D c d e D D e D b D b c a$
     = '(pnl
         (! th_p00 $D e D b D b c$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp000 e b c d));
-pub theorem th_3_5 (a b c d e : wff) : $-> D a D D b D a c d D D d -> D e c D b e a$
+theorem th_3_5 (a b c d e : wff) : $-> D a D D b D a c d D D d -> D e c D b e a$
     = '(pnl
         (! th_p00 $D d -> D e c D b e$  $D D b D a c d$  $D D b D a c d$  a)
-        (! th_2_3 d e c b a));
+        (! th_pp00p00 d e c b a));
 -- TODO: Check missing. Done: th21 ax, th21 th1, th22 ax, th22 th1, th22 th22, th23 ax, th23 th1
