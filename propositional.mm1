@@ -59,8 +59,6 @@ theorem th_p00 (a b c d : wff) : $D D a D b c D D a D b c D D d c D D a d D a d$
         (! axl a b c d));
 --| th 2.1
 --| Short: -> D a D b c D a D b c
---| Hypothesis: D a D b c
---| Conclusion: D a D b c
 --| No new theorems can be derived from this in the first position of pnl
 theorem th_p0p00 (a b c : wff) : $D D a D b c D D a D b c D a D b c$
     = '(pnl
