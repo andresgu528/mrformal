@@ -84,22 +84,27 @@ theorem th_pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D D d D e 
         (! th_p00 d e c b));
 -- th_p00p0p00 gives the same result as thp0p00
 --| th 3.1
---| Hypothesis: D a D b D b c
---| Conclusion: D D b D c d a
---| Using this in first position of pnl is equivalent to usign th_pp000
+--| Using this in first position of pnl is equivalent to usign th_pp000 (2.2)
 theorem th_p0pp000 (a b c d : wff) : $D D a D b D b c D D a D b D b c D D b D c d a$
     = '(pnl
         (! axl $D a D b D b c$  $D D b D c d a$  $D D b D c d a$  a)
         (! th_pp000 a b c d));
--- TODO: Add short, hypothesis, conclusion to everything below
-theorem th_3_2 (a b c d e : wff) : $D D a -> D b c D d b D D a -> D b c D d b D D d D e c a$
+--| th 3.2
+--| Short: D D a -> D b c D d b D D a -> D b c D d b D D d D e c a
+--| Using this in first position of pnl is equivalent to using th_pp00p00 (2.3)
+theorem th_p0pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D a D D b c D D d b D d b D D d D e c a$
     = '(pnl
-        (! axl $D a -> D b c D d b$  $D D d D e c a$  $D D d D e c a$  a)
+        (! axl $D a D D b c D D d b D d b$  $D D d D e c a$  $D D d D e c a$  a)
         (! th_pp00p00 a b c d e));
-theorem th_3_3 (a b c d : wff) : $-> D a D b D c d D D b D c d a$
+--| th 3.3
+--| Short: -> D a D b D c d D D b D c d a
+--| Hypothesis: D a D b D c d
+--| Conclusion: D D b D c d a
+theorem th_pp00p0p00 (a b c d : wff) : $D D a D b D c d D D D b D c d a D D b D c d a$
     = '(pnl
         (! th_p00 $D b D c d$  $D b D c d$  $D b D c d$  a)
         (! th_p0p00 b c d));
+-- TODO: Add short, hypothesis, conclusion to everything below
 theorem th_3_4 (a b c d e : wff) : $-> D a D D b D c d e D D e D b D b c a$
     = '(pnl
         (! th_p00 $D e D b D b c$  $D D b D c d e$  $D D b D c d e$  a)
