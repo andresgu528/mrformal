@@ -80,7 +80,6 @@ theorem th_pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D D d D e 
     = '(pnl
         (! th_p00 $D d D e c$  $D d D e c$  $D D b c D D d b D d b$  a)
         (! th_p00 d e c b));
--- th_p00p0p00 gives the same result as thp0p00
 --| th 3.1
 --| Using this in first position of pnl is equivalent to usign th_pp000 (2.2)
 theorem th_p0pp000 (a b c d : wff) : $D D a D b D b c D D a D b D b c D D b D c d a$
@@ -102,13 +101,19 @@ theorem th_pp00p0p00 (a b c d : wff) : $D D a D b D c d D D D b D c d a D D b D 
     = '(pnl
         (! th_p00 $D b D c d$  $D b D c d$  $D b D c d$  a)
         (! th_p0p00 b c d));
--- TODO: Add short, hypothesis, conclusion to everything below
-theorem th_3_4 (a b c d e : wff) : $-> D a D D b D c d e D D e D b D b c a$
+--| th 3.4
+--| Short: -> D a D D b D c d e D D e D b D b c a
+--| Hypothesis: D a D D b D c d e
+--| Conclusion: D D e D b D b c a
+theorem th_pp00pp000 (a b c d e : wff) : $D D a D D b D c d e D D D e D b D b c a D D e D b D b c a$
     = '(pnl
         (! th_p00 $D e D b D b c$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp000 e b c d));
-theorem th_3_5 (a b c d e : wff) : $-> D a D D b D a c d D D d -> D e c D b e a$
+--| th 3.5
+--| Short: -> D a D D b D a c d D D d -> D e c D b e a
+--| Hypothesis: D a D D b D c d e
+--| Conclusion: D D e D D f d D D b f D b f a
+theorem th_pp00pp00p00 (a b c d e : wff) : $D D a D D b D c d e D D D e D D f d D D b f D b f a D D e D D f d D D b f D b f a$
     = '(pnl
-        (! th_p00 $D d -> D e c D b e$  $D D b D a c d$  $D D b D a c d$  a)
-        (! th_pp00p00 d e c b a));
--- TODO: Check missing. Done: th21 ax, th21 th1, th22 ax, th22 th1, th22 th22, th23 ax, th23 th1
+        (! th_p00 $D e D D f d D D b f D b f$  $D D b D c d e$  $D D b D c d e$  a)
+        (! th_pp00p00 e f d b c));
