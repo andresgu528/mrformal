@@ -16,123 +16,147 @@ prefix nand : $D$ prec max;
 -- Inference rules
 
 --| Nicod's ponens, the only inference rule needed in this propositional calculus.
-axiom pnl (a b c : wff) (h1 : $D a D b c$) (h2 : $a$) : $c$;
+axiom pnl (a b c: wff) (h1: $D a D b c$) (h2: $a$): $c$;
 
 --| Logical axioms
 
 --| Wajsberg's axiom, from this axiom scheme and Nicod's ponens, all classical logic can
 --| be derived.
---| Short: D D a D b c D -> D d c D a d D a D a b
+--| Short: D (D a D b c) (D (-> D d c D a d) (D a D a b))
 --| Hypothesis: D a D b c
 --| Conclusion: D a D a b
-axiom axl (a b c d : wff) : $D D a D b c D D D d c D D a d D a d D a D a b$;
+axiom axl (a b c d: wff): $D D a D b c D D D d c D D a d D a d D a D a b$;
 
 
 --| Define the not logical connective.
-def not (a : wff) : wff = $D a a$;
+def not (a: wff): wff = $D a a$;
 prefix not : $~$ prec max;
 --| Define the and logical connective.
-def and (a b : wff) : wff = $D D a b D a b$;
+def and (a b: wff): wff = $D D a b D a b$;
 prefix and : $/\$ prec max;
 --| Define the or logical connective.
-def or (a b : wff) : wff = $D D a a D b b$;
+def or (a b: wff): wff = $D D a a D b b$;
 prefix or : $\/$ prec max;
 --| Define the implication logical connective.
-def imp (a b : wff) : wff = $D a D b b$;
+def imp (a b: wff): wff = $D a D b b$;
 prefix imp : $->$ prec max;
 
 -- Derived induction rules.
 --| Nicod ponens with and.
-theorem pn_a (a b c : wff) (h1 : $D a /\ b c$) (h2 : $a$) : $D b c$
+theorem pn_a (a b c: wff) (h1: $D a /\ b c$) (h2: $a$): $D b c$
     = '(pnl h1 h2);
 --| Modus ponens.
-theorem mp(a b : wff) (h1 : $-> a b$) (h2 : $a$)  : $b$
+theorem mp(a b: wff) (h1: $-> a b$) (h2: $a$): $b$
     = '(pnl h1 h2);
 
---| th 1
---| Short: D D a D b c D D a D b c -> D d c D a d
+--| th 1 (0-0)
+--| Short: D (D a D b c) (D (D a D b c) (-> D d c D a d))
 --| Hypothesis: D a D b c
 --| Conclusion: D D d c D D a d D a d
-theorem th_p00 (a b c d : wff) : $D D a D b c D D a D b c D D d c D D a d D a d$
+theorem th_p00 (a b c d: wff): $D D a D b c D D a D b c D D d c D D a d D a d$
     = '(pnl
         (! axl $D a D b c$  $D D d c D D a d D a d$  $D a D a b$  a)
         (! axl a b c d));
---| th 2.1
---| Short: -> D a D b c D a D b c
+--| th 2.1 (0-1)
+--| Short: -> (D a D b c) (D a D b c)
 --| No new theorems can be derived from this in the first position of pnl
-theorem th_p0p00 (a b c : wff) : $D D a D b c D D a D b c D a D b c$
+theorem th_p0p00 (a b c: wff): $D D a D b c D D a D b c D a D b c$
     = '(pnl
         (! axl $D a D b c$  $D a D b c$  $D D a c D D a a D a a$  a)
         (! th_p00 a b c a));
---| th 2.2
---| Short: -> D a D b D b c D D b D c d a
+--| th 2.2 (1-0)
+--| Short: -> (D a D b D b c) (D D b D c d a)
 --| Hypothesis: D a D b D b c
 --| Conclusion: D D b D c d a
-theorem th_pp000(a b c d : wff) : $D D a D b D b c D D D b D c d a D D b D c d a$
+theorem th_pp000(a b c d: wff): $D D a D b D b c D D D b D c d a D D b D c d a$
     = '(pnl
         (! th_p00 $D b D c d$  $D D a d D D b a D b a$  $D b D b c$  a)
         (! axl b c d a));
---| th 2.3
---| Short: -> D a -> D b c D d b D D d D e c a
+--| th 2.3 (1-1)
+--| Short: -> (D a (-> D b c D d b)) (D D d D e c a)
 --| Hypothesis: D a D D b c D D d b D d b
 --| Conclusion: D D d D e c a
-theorem th_pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D D d D e c a D D d D e c a$
+theorem th_pp00p00 (a b c d e: wff): $D D a D D b c D D d b D d b D D D d D e c a D D d D e c a$
     = '(pnl
         (! th_p00 $D d D e c$  $D d D e c$  $D D b c D D d b D d b$  a)
         (! th_p00 d e c b));
---| th 3.1
+--| th 3.1 (0-2.2)
 --| Using this in first position of pnl is equivalent to usign th_pp000 (2.2)
-theorem th_p0pp000 (a b c d : wff) : $D D a D b D b c D D a D b D b c D D b D c d a$
+theorem th_p0pp000 (a b c d: wff): $D D a D b D b c D D a D b D b c D D b D c d a$
     = '(pnl
         (! axl $D a D b D b c$  $D D b D c d a$  $D D b D c d a$  a)
         (! th_pp000 a b c d));
---| th 3.2
---| Short: D D a -> D b c D d b D D a -> D b c D d b D D d D e c a
+--| th 3.2 (0-2.3)
+--| Short: D (D a (-> D b c D d b)) (D (D a (-> D b c D d b)) (D D d D e c a))
 --| Using this in first position of pnl is equivalent to using th_pp00p00 (2.3)
-theorem th_p0pp00p00 (a b c d e : wff) : $D D a D D b c D D d b D d b D D a D D b c D D d b D d b D D d D e c a$
+theorem th_p0pp00p00 (a b c d e: wff): $D D a D D b c D D d b D d b D D a D D b c D D d b D d b D D d D e c a$
     = '(pnl
         (! axl $D a D D b c D D d b D d b$  $D D d D e c a$  $D D d D e c a$  a)
         (! th_pp00p00 a b c d e));
---| th 3.3
---| Short: -> D a D b D c d D D b D c d a
+--| th 3.3 (1-2.1)
+--| Short: -> (D a D b D c d) (D (D b D c d) a)
 --| Hypothesis: D a D b D c d
 --| Conclusion: D D b D c d a
-theorem th_pp00p0p00 (a b c d : wff) : $D D a D b D c d D D D b D c d a D D b D c d a$
+theorem th_pp00p0p00 (a b c d: wff): $D D a D b D c d D D D b D c d a D D b D c d a$
     = '(pnl
         (! th_p00 $D b D c d$  $D b D c d$  $D b D c d$  a)
         (! th_p0p00 b c d));
---| th 3.4
---| Short: -> D a D D b D c d e D D e D b D b c a
+--| th 3.4 (1-2.2)
+--| Short: -> (D a (D (D b (D c d)) e)) (D (D e (D b (D b c))) a)
 --| Hypothesis: D a D D b D c d e
 --| Conclusion: D D e D b D b c a
-theorem th_pp00pp000 (a b c d e : wff) : $D D a D D b D c d e D D D e D b D b c a D D e D b D b c a$
+theorem th_pp00pp000 (a b c d e: wff): $D D a D D b D c d e D D D e D b D b c a D D e D b D b c a$
     = '(pnl
         (! th_p00 $D e D b D b c$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp000 e b c d));
---| th 3.5
---| Short: -> D a D D b D c d e D D e -> D f d D b f a
+--| th 3.5 (1-2.3)
+--| Short: -> (D a (D (D b (D c d)) e)) (D (D e (-> D f d D b f)) a)
 --| Hypothesis: D a D D b D c d e
 --| Conclusion: D D e D D f d D D b f D b f a
-theorem th_pp00pp00p00 (a b c d e f : wff) : $D D a D D b D c d e D D D e D D f d D D b f D b f a D D e D D f d D D b f D b f a$
+theorem th_pp00pp00p00 (a b c d e f: wff): $D D a D D b D c d e D D D e D D f d D D b f D b f a D D e D D f d D D b f D b f a$
     = '(pnl
         (! th_p00 $D e D D f d D D b f D b f$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp00p00 e f d b c));
---| th 4.1
+--| th 4.1 (0-3.3)
 --| Using this in first position of pnl is equivalent to using th_pp00p0p00 (3.3)
-theorem th_p0pp00p0p00 (a b c d : wff) : $D D a D b D c d D D a D b D c d D D b D c d a$
+theorem th_p0pp00p0p00 (a b c d: wff): $D D a D b D c d D D a D b D c d D D b D c d a$
     = '(pnl
         (! axl $D a D b D c d$ $D D b D c d a$ $D D b D c d a$ a)
         (! th_pp00p0p00 a b c d));
---| th 4.2
+--| th 4.2 (0-3.4)
 --| Using this in first position of pnl is equivalent to using th_pp00pp000 (3.4)
-theorem th_p0pp00pp000 (a b c d : wff) : $D D a D D b D c d e D D a D D b D c d e D D e D b D b c a$
+theorem th_p0pp00pp000 (a b c d e: wff): $D D a D D b D c d e D D a D D b D c d e D D e D b D b c a$
     = '(pnl
         (! axl $D a D D b D c d e$ $D D e D b D b c a$ $D D e D b D b c a$ a)
         (! th_pp00pp000 a b c d e));
---| th 4.3
---| Short: D D a D D b D c d e D D a D D b D c d e D D e -> D f d D b f a
+--| th 4.3 (0-3.5)
+--| Short: D (D a (D (D b (D c d)) e)) (D (D a (D (D b (D c d)) e)) (D (D e (-> D f d D b f)) a))
 --| Using this in first position of pnl is equivalent to using th_pp00pp00p00 (3.5)
-theorem th_p0pp00pp00p00 (a b c d : wff) : $D D a D D b D c d e D D a D D b D c d e D D e D D f d D D b f D b f a$
+theorem th_p0pp00pp00p00 (a b c d e f: wff): $D D a D D b D c d e D D a D D b D c d e D D e D D f d D D b f D b f a$
     = '(pnl
-        (! axl $ D a D D b D c d e$ $D D e D D f d D D b f D b f a$ $D D e D D f d D D b f D b f a$ a)
+        (! axl $D a D D b D c d e$ $D D e D D f d D D b f D b f a$ $D D e D D f d D D b f D b f a$ a)
         (! th_pp00pp00p00 a b c d e f));
+--| th 4.4 (1-3.3)
+--| Short: -> (D a D (D b D c d) e) (D D e (D b D c d) a)
+--| Hypothesis: D a D D b D c d e
+--| Conclusion: D D e D b D c d a
+theorem th_pp00pp00p0p00 (a b c d e: wff): $D D a D D b D c d e D D D e D b D c d a D D e D b D c d a$
+    = '(pnl
+        (! th_p00 $D e D b D c d$ $D D b D c d e$ $D D b D c d e$ a)
+        (! th_pp00p0p00 e b c d));
+--| th 4.5 (1-3.4)
+--| Short: -> (D a D (D b (D c D c d)) e) (D D e D D c D d f b a)
+--| Hypothesis: D a D D b D c D c d e
+--| Conclusion: D D e D D c D d f b a
+theorem th_pp00pp00pp000 (a b c d e f: wff): $D D a D D b D c D c d e D D D e D D c D d f b a D D e D D c D d f b a$
+    = '(pnl
+        (! th_p00 $D e D D c D d f b$ $D D b D c D c d e$ $D D b D c D c d e$ a)
+        (! th_pp00pp000 e c d f b));
+--| th 4.6 (1-3.5)
+--| Short: -> (D a D D b (-> D c d D e c) f) (D D f (D (D e D g d) b) a)
+--| Hypothesis: D a D D b D D c d D D e c D e c f
+--| Conclusion: D D f D D e D g d b a
+theorem th_pp00pp00pp00p00 (a b c d e f g: wff): $D D a D D b D D c d D D e c D e c f D D D f D D e D g d b a D D f D D e D g d b a$
+    = '(pnl
+        (! th_p00 $D f D D e D g d b$ $D D b D D c d D D e c D e c f$ $D D b D D c d D D e c D e c f$ a)
+        (! th_pp00pp00p00 f e g d b c));
