@@ -2,7 +2,7 @@
 -- Author: Andres Guarin
 -- E-mail: anguco528@gmail.com
 
-provable sort wff;
+provable strict sort wff;
 
 -- Language
 -- The language will consist of the D logical connective, that represents the NAND
@@ -110,10 +110,29 @@ theorem th_pp00pp000 (a b c d e : wff) : $D D a D D b D c d e D D D e D b D b c 
         (! th_p00 $D e D b D b c$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp000 e b c d));
 --| th 3.5
---| Short: -> D a D D b D a c d D D d -> D e c D b e a
+--| Short: -> D a D D b D c d e D D e -> D f d D b f a
 --| Hypothesis: D a D D b D c d e
 --| Conclusion: D D e D D f d D D b f D b f a
 theorem th_pp00pp00p00 (a b c d e f : wff) : $D D a D D b D c d e D D D e D D f d D D b f D b f a D D e D D f d D D b f D b f a$
     = '(pnl
         (! th_p00 $D e D D f d D D b f D b f$  $D D b D c d e$  $D D b D c d e$  a)
         (! th_pp00p00 e f d b c));
+--| th 4.1
+--| Using this in first position of pnl is equivalent to using th_pp00p0p00 (3.3)
+theorem th_p0pp00p0p00 (a b c d : wff) : $D D a D b D c d D D a D b D c d D D b D c d a$
+    = '(pnl
+        (! axl $D a D b D c d$ $D D b D c d a$ $D D b D c d a$ a)
+        (! th_pp00p0p00 a b c d));
+--| th 4.2
+--| Using this in first position of pnl is equivalent to using th_pp00pp000 (3.4)
+theorem th_p0pp00pp000 (a b c d : wff) : $D D a D D b D c d e D D a D D b D c d e D D e D b D b c a$
+    = '(pnl
+        (! axl $D a D D b D c d e$ $D D e D b D b c a$ $D D e D b D b c a$ a)
+        (! th_pp00pp000 a b c d e));
+--| th 4.3
+--| Short: D D a D D b D c d e D D a D D b D c d e D D e -> D f d D b f a
+--| Using this in first position of pnl is equivalent to using th_pp00pp00p00 (3.5)
+theorem th_p0pp00pp00p00 (a b c d : wff) : $D D a D D b D c d e D D a D D b D c d e D D e D D f d D D b f D b f a$
+    = '(pnl
+        (! axl $ D a D D b D c d e$ $D D e D D f d D D b f D b f a$ $D D e D D f d D D b f D b f a$ a)
+        (! th_pp00pp00p00 a b c d e f));
