@@ -160,3 +160,18 @@ theorem th_pp00pp00pp00p00 (a b c d e f g: wff): $D D a D D b D D c d D D e c D 
     = '(pnl
         (! th_p00 $D f D D e D g d b$ $D D b D D c d D D e c D e c f$ $D D b D D c d D D e c D e c f$ a)
         (! th_pp00pp00p00 f e g d b c));
+--| th 4.7 (2.2-3.1)
+--| Short: D (D (D a -> a a) D a b) (D a -> a a)
+--| Hypothesis: D D a D a D a a D a b
+--| Conclusion: D a D a D a a
+theorem th_ppp000p0pp000 (a b : wff): $D D D a D a D a a D a b D a D a D a a$
+    = '(pnl
+        (! th_pp000 $D a D a D a a$ $D a D a D a a$ a b)
+        (! th_p0pp000 a a a $D a a$));
+--| th 4.8 (2.2-3.2)
+--| Hypothesis: D D a D D b D D a b D a b D D a b D a b D a c
+--| Conclusion: D a D D b D D a b D a b D D a b D a b
+theorem th_ppp000p0pp00p00 (a b c: wff): $D D D a D D b D D a b D a b D D a b D a b D a c D a D D b D D a b D a b D D a b D a b$
+    = '(pnl
+        (! th_pp000 $D a D D b D D a b D a b D D a b D a b$ $D a D D b D D a b D a b D D a b D a b$ a c)
+        (! th_p0pp00p00 a b $D D a b D a b$ a $D b D D a b D a b$));
