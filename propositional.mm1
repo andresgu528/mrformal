@@ -175,3 +175,8 @@ theorem th_ppp000p0pp00p00 (a b c: wff): $D D D a D D b D D a b D a b D D a b D 
     = '(pnl
         (! th_pp000 $D a D D b D D a b D a b D D a b D a b$ $D a D D b D D a b D a b D D a b D a b$ a c)
         (! th_p0pp00p00 a b $D D a b D a b$ a $D b D D a b D a b$));
+--| th 4.9 (3.3-0)
+theorem th_ppp00p0p000 (a b c d: wff): $D D D D a b D D c a D c a D c D c d D c D d b$
+    = '(pnl
+        (! th_pp00p0p00 $D c D d b$ $D D a b D D c a D c a$ c $D c d$)
+        (! axl c d b a));
